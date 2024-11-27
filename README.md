@@ -20,7 +20,7 @@ Diese Anleitung hilft dir dabei, das Scriptable Widget zu installieren und zu ko
 
 ### Schritt 2: Füge das Skript hinzu
 1. Öffne Scriptable und tippe auf das `+`-Symbol oben rechts, um ein neues Skript zu erstellen.
-2. Kopiere den untenstehenden Code in die neue Skriptdatei.
+2. Kopiere den oben stehenden Code in die neue Skriptdatei.
 3. Tippe auf **Fertig**, um das Skript zu speichern.
 
 ### Schritt 3: Richte das Widget ein
