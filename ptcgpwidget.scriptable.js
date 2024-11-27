@@ -150,13 +150,14 @@ function formatDateGerman(dateString) {
 }
 
 async function checkForUpdate() {
-  const configUrl = "https://raw.githubusercontent.com/DEIN_USERNAME/DEIN_REPO/main/config.json"; // Zentrale Konfigurationsdatei
-  const localVersion = "1.0.0"; // Aktuelle lokale Version
+  const configUrl = "https://raw.githubusercontent.com/nimeofficially/Pok-mon-TCG-Event-Scriptable-Widget/refs/heads/main/config.json"; // Zentrale Konfigurationsdatei
+  const localVersion = "1.1.0"; // Aktuelle lokale Version
 
   try {
     await showProgressNotification(1, 3, "Lade Konfigurationsdaten...");
     const configRequest = new Request(configUrl);
     const config = await configRequest.loadJSON();
+    console.log("Config geladen:", config); // Debugging: Zeigt den Inhalt der config an
 
     const versionUrl = config.versionUrl; // Hole die URL zur version.json
     console.log(`Version-URL: ${versionUrl}`);
@@ -164,6 +165,7 @@ async function checkForUpdate() {
     await showProgressNotification(2, 3, "Überprüfe aktuelle Version...");
     const versionRequest = new Request(versionUrl);
     const remoteData = await versionRequest.loadJSON();
+    console.log("Version-Daten geladen:", remoteData); // Debugging: Zeigt den Inhalt der Version-Daten an
 
     const remoteVersion = remoteData.version;
     const updateUrl = remoteData.url;
@@ -175,10 +177,12 @@ async function checkForUpdate() {
       await showProgressNotification(3, 3, "Lade und speichere neues Script...");
       const scriptRequest = new Request(updateUrl);
       const updatedScript = await scriptRequest.loadString();
+      console.log("Script geladen."); // Debugging: Bestätigung, dass das Script erfolgreich geladen wurde
 
       const fm = FileManager.local();
       const path = fm.joinPath(fm.documentsDirectory(), Script.name());
       fm.writeString(path, updatedScript);
+      console.log("Script gespeichert unter:", path); // Debugging: Zeigt den Speicherpfad des Scripts an
 
       console.log("Update abgeschlossen! Bitte Script erneut starten.");
 
@@ -198,7 +202,7 @@ async function checkForUpdate() {
 
     const notification = new Notification();
     notification.title = "Update Fehler";
-    notification.body = "Beim Überprüfen oder Installieren des Updates ist ein Fehler aufgetreten.";
+    notification.body = `Beim Überprüfen oder Installieren des Updates ist ein Fehler aufgetreten: ${error.message}`;
     await notification.schedule();
   }
 }
@@ -209,3 +213,6 @@ async function showProgressNotification(step, totalSteps, message) {
   notification.body = message;
   await notification.schedule();
 }
+
+// Starte Update-Überprüfung
+await checkForUpdate();
